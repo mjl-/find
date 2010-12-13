@@ -131,6 +131,14 @@ imatch(i: int, l: list of int): int
 	return 0;
 }
 
+patmatch(s: string, l: list of string): int
+{
+	for(; l != nil; l = tl l)
+		if(filepat->match(hd l, s))
+			return 1;
+	return 0;
+}
+
 rematch(s: string, l: list of Regex->Re): int
 {
 	for(; l != nil; l = tl l) {
@@ -152,10 +160,10 @@ file(f: string, d: Sys->Dir, depth: int)
 		&& !smatch(d.uid, xusers)
 		&& (groups == nil || smatch(d.gid, groups))
 		&& !smatch(d.gid, xgroups)
-		&& (names == nil || smatch(d.name, names))
-		&& !smatch(d.name, xnames)
-		&& (inames == nil || smatch(str->tolower(d.name), inames))
-		&& !smatch(str->tolower(d.name), xinames)
+		&& (names == nil || patmatch(d.name, names))
+		&& !patmatch(d.name, xnames)
+		&& (inames == nil || patmatch(str->tolower(d.name), inames))
+		&& !patmatch(str->tolower(d.name), xinames)
 		&& (pathres == nil || rematch(p, pathres))
 		&& !rematch(p, xpathres)
 		&& (isdir == ~0 || (isdir && (d.mode & Sys->DMDIR)) || (!isdir && !(d.mode & Sys->DMDIR)))
