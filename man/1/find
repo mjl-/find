@@ -1,0 +1,125 @@
+.TH FIND 1
+.SH NAME
+find - recursive filter and list files
+.SH SYNOPSIS
+.B find
+[
+.B -l
+] [ 
+.BI -t " f|d"
+] [
+.BI -d " mindepth"
+] [
+.BI -D " maxdepth"
+] [
+.BI -[uU] " user"
+] [
+.BI -[gG] " group"
+] [
+.BI -[iI] " name"
+] [
+.BI -[nN] " name"
+] [
+.BI -[rR] " pathregex"
+] [
+.BI -[pP] " perm"
+] [
+.BI -[mM] " mode"
+]
+.I path
+.SH DESCRIPTION
+.I Find
+traverses a directory hiearchy, and prints file names.  It starts at
+.IR path ,
+typically but not necessarily a directory, and recursively walks all directories, printing the full path name (which always starts with
+.IR path )
+of each file.
+If option
+.B -l
+was given more information is printed, in a format similar to that of
+.IR ls (1).
+The remaining options filter paths to print and traverse.  The next options can only be specified once:
+.TP
+.BI -d " mindepth"
+Minimum depth of file required to print the file, relative to
+.IR path .
+.I Path
+is at depth 0 (even if it is a plain file).
+The first file in
+.I path
+is at depth 1.
+.TP
+.BI -D " maxdepth"
+Maximum depth of file to print the file, and traverse if it is a directory.
+.TP
+.BI -t " f|d"
+Print only files (in case of
+.IR f ),
+or only directories (in case of
+.IR d ).
+By default, both files and directories are printed.
+.PP
+The remaining options can be specified multiple times.  For each lower case option a similar upper case option exists.  Files are printed if they match at least one of the patterns specified with the lower case options, or when no such patterns were specified.  But only if the file does not match any of the patterns specified by the upper case options.  The options and the file property they check against:
+.TP
+.BI -[uU] " user"
+Owner (uid) of the file.
+.TP
+.BI -[gG] " group"
+Group (gid) of the file.
+.TP
+.BI -[iI] " name"
+Case-insensitive
+.I name
+of the file.
+.I Name
+is interpreted as a file pattern, see
+.IR filepat (2)
+for details.
+This only checks against the name of the file itself, not against the whole path.
+.TP
+.BI -[nN] " name"
+Case-sensitive
+.I name
+of the file.
+.I Name
+is interpreted as a file pattern, see
+.IR filepat (2)
+for details.
+This only checks against the name of the file itself, not against the whole path.
+.TP
+.BI -[rR] " pathregex"
+Regular expression
+.I pathregex
+is matched against the full path (always starting with
+.IR path ).
+.TP
+.BI -[pP] " perm"
+Permission bits (8r777) of the file,
+.I perm
+is interpreted as octal number.
+.TP
+.BI -[mM] " mode"
+Mode bits (~8r777) of the file.
+.I Mode
+must be a string with one or more of the following characters:
+.B d
+for directory,
+.B a
+for append-only,
+.B A
+for authentication file,
+.B l
+for exclusive-use file.
+.SH SOURCE
+/appl/cmd/find.b
+.SH SEE ALSO
+.IR ls (1),
+.IR alphabet-fs (1),
+.IR du (1),
+.IR sys-stat (2),
+.IR filepat (2),
+.IR regex (6).
+.SH BUGS
+Only relatively simple selection criteria cna be formulated.  See
+.IR alphabet-fs (1)
+for more advanced filtering.

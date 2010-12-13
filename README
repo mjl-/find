@@ -1,0 +1,34 @@
+# status
+
+should work.
+
+
+# intro
+
+find lets you traverse directory trees and print paths and sys-stat(2)
+information about a file.  it is intended to use than alphabet-fs(1)
+and/or du(1) with various combinations of grep, sed and for-loops
+with ftest(1).  find's usage is different from the unix version
+(most importantly, it uses standard option syntax).
+
+
+# install
+
+change the "mkconfig" if you do not have $ROOT set.  now "mk install"
+to compile and install the files.
+
+when building from within inferno, insert SYSHOST=Inferno and ROOT=
+in the mk invocations to override the values in the mkconfig.
+
+
+# latest version
+
+the latest version can be found at:
+
+    http://www.ueber.net/code/r/find
+
+
+# licence & author
+
+all files are in the public domain.  this code has been written by
+mechiel lukkien, reachable at mechiel@ueber.net or mechiel@xs4all.nl.
