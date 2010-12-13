@@ -6,10 +6,10 @@ should work.
 # intro
 
 find lets you traverse directory trees and print paths and sys-stat(2)
-information about a file.  it is intended to use than alphabet-fs(1)
-and/or du(1) with various combinations of grep, sed and for-loops
-with ftest(1).  find's usage is different from the unix version
-(most importantly, it uses standard option syntax).
+information about a file.  it is intended to be easier to use than
+alphabet-fs(1) and/or du(1) with various combinations of grep, sed
+and for-loops with ftest(1).  find's usage is different from the
+unix version (most importantly, it uses standard option syntax).
 
 
 # install
@@ -31,4 +31,4 @@ the latest version can be found at:
 # licence & author
 
 all files are in the public domain.  this code has been written by
-mechiel lukkien, reachable at mechiel@ueber.net or mechiel@xs4all.nl.
+mechiel lukkien, reachable at mechiel@ueber.net.
