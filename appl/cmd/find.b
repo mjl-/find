@@ -53,21 +53,20 @@ init(nil: ref Draw->Context, args: list of string)
 	now = dt->now();
 
 	arg->init(args);
-	arg->setusage(arg->progname()+" [-l] [-d mindepth] [-D maxdepth] [-u user] [-g group] [-i name] [-I name] [-n name] [-N name] [-r pathregex] [-R pathregex] [-p perm] [-P perm] [-m mode] [-M mode] [-t f|d] path");
+	arg->setusage(arg->progname()+" [-l] [-f | -F] [-d mindepth] [-D maxdepth] [-[uU] user] [-[gG] group] [-[iI] name] [-[nN] name] [-[rR] pathregex] [-[pP] perm] [-[mM] mode] path");
 	while((c := arg->opt()) != 0)
 		case c {
 		'l' =>	lflag++;
+		'f' =>
+			if(isdir != ~0)
+				arg->usage();
+			isdir = 0;
+		'F' =>
+			if(isdir != ~0)
+				arg->usage();
+			isdir = 1;
 		'd' =>	depthmin = int arg->arg();
 		'D' =>	depthmax = int arg->arg();
-		't' =>
-			s := arg->arg();
-			if(len s != 1)
-				arg->usage();
-			case s[0] {
-			'f' =>	isdir = 0;
-			'd' =>	isdir = 1;
-			* =>	arg->usage();
-			}
 		'u' =>	users = arg->arg()::users;
 		'U' =>	xusers = arg->arg()::xusers;
 		'g' =>	groups = arg->arg()::groups;

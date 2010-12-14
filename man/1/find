@@ -6,7 +6,7 @@ find - recursive filter and list files
 [
 .B -l
 ] [ 
-.BI -t " f|d"
+.BI -f " | " -F
 ] [
 .BI -d " mindepth"
 ] [
@@ -52,12 +52,12 @@ is at depth 1.
 .BI -D " maxdepth"
 Maximum depth of file to print the file, and traverse if it is a directory.
 .TP
-.BI -t " f|d"
-Print only files (in case of
-.IR f ),
-or only directories (in case of
-.IR d ).
-By default, both files and directories are printed.
+.BI -f " or " -F
+Print only files in case of
+.BR -f ,
+or only directories in case of
+.BR -F .
+By default, both files and directories are printed.  Only one of these options may be specified.
 .PP
 The remaining options can be specified multiple times.  For each lower case option a similar upper case option exists.  Files are printed if they match at least one of the patterns specified with the lower case options, or when no such patterns were specified.  But only if the file does not match any of the patterns specified by the upper case options.  The options and the file property they check against:
 .TP
@@ -113,6 +113,7 @@ for exclusive-use file.
 .SH SOURCE
 /appl/cmd/find.b
 .SH SEE ALSO
+.IR fs (1),
 .IR ls (1),
 .IR alphabet-fs (1),
 .IR du (1),
@@ -120,6 +121,8 @@ for exclusive-use file.
 .IR filepat (2),
 .IR regex (6).
 .SH BUGS
-Only relatively simple selection criteria cna be formulated.  See
-.IR alphabet-fs (1)
-for more advanced filtering.
+Only relatively simple selection criteria can be formulated.  See
+.IR fs (1)
+for more advanced filtering and operations.
+.PP
+Options for filtering on permission mask, and perhaps mode mask, should be offered.
