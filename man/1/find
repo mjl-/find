@@ -1,12 +1,12 @@
 .TH FIND 1
 .SH NAME
-find - recursive filter and list files
+find - recursively filter and list files
 .SH SYNOPSIS
 .B find
 [
 .B -l
 ] [ 
-.BI -f " | " -F
+.BR -f " | " -F
 ] [
 .BI -d " mindepth"
 ] [
@@ -19,6 +19,10 @@ find - recursive filter and list files
 .BI -[iI] " name"
 ] [
 .BI -[nN] " name"
+] [
+.BI -J " name"
+] [
+.BI -T " name"
 ] [
 .BI -[rR] " pathregex"
 ] [
@@ -59,7 +63,11 @@ or only directories in case of
 .BR -F .
 By default, both files and directories are printed.  Only one of these options may be specified.
 .PP
-The remaining options can be specified multiple times.  For each lower case option a similar upper case option exists.  Files are printed if they match at least one of the patterns specified with the lower case options, or when no such patterns were specified.  But only if the file does not match any of the patterns specified by the upper case options.  The options and the file property they check against:
+The remaining options can be specified multiple times.  For each lower case option a similar upper case option exists, except for
+.B -J
+and
+.BR -T .
+Files are printed if they match at least one of the patterns specified with the lower case options, or when no such patterns were specified.  But only if the file does not match any of the patterns specified by the upper case options.  The options and the file property they check against:
 .TP
 .BI -[uU] " user"
 Owner (uid) of the file.
@@ -86,6 +94,14 @@ is interpreted as a file pattern, see
 .IR filepat (2)
 for details.
 This only checks against the name of the file itself, not against the whole path.
+.TP
+.BI -J " name"
+Case-insensitive compare.  Don't print, and stop walking a (sub)tree when it matches.
+.TP
+.BI -T " name"
+Like
+.BR -J ,
+but with case-sensitive compare.
 .TP
 .BI -[rR] " pathregex"
 Regular expression

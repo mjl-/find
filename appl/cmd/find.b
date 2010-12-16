@@ -27,7 +27,7 @@ Find: module {
 
 lflag: int;
 users, xusers, groups, xgroups,
-inames, xinames, names, xnames: list of string;
+inames, xinames, names, xnames, xdirs, xidirs: list of string;
 pathres, xpathres: list of Regex->Re;
 depthmin := depthmax := isdir := ~0;
 perms, xperms, modes, xmodes: list of int;
@@ -53,7 +53,7 @@ init(nil: ref Draw->Context, args: list of string)
 	now = dt->now();
 
 	arg->init(args);
-	arg->setusage(arg->progname()+" [-l] [-f | -F] [-d mindepth] [-D maxdepth] [-[uU] user] [-[gG] group] [-[iI] name] [-[nN] name] [-[rR] pathregex] [-[pP] perm] [-[mM] mode] path");
+	arg->setusage(arg->progname()+" [-l] [-f | -F] [-d mindepth] [-D maxdepth] [-[uU] user] [-[gG] group] [-[iI] name] [-[nN] name] [-J iname] [-T name] [-[rR] pathregex] [-[pP] perm] [-[mM] mode] path");
 	while((c := arg->opt()) != 0)
 		case c {
 		'l' =>	lflag++;
@@ -75,12 +75,15 @@ init(nil: ref Draw->Context, args: list of string)
 		'I' =>	xinames = arg->arg()::xinames;
 		'n' =>	names = arg->arg()::names;
 		'N' =>	xnames = arg->arg()::xnames;
+		'J' =>	xidirs = arg->arg()::xidirs;
+		'T' =>	xdirs = arg->arg()::xdirs;
 		'r' =>	pathres = xcompile(arg->arg())::pathres;
 		'R' =>	xpathres = xcompile(arg->arg())::xpathres;
 		'p' =>	perms = xoctal(arg->arg())::perms;
 		'P' =>	xperms = xoctal(arg->arg())::xperms;
 		'm' =>	modes = xmode(arg->arg())::modes;
 		'M' =>	xmodes = xmode(arg->arg())::xmodes;
+		* =>	arg->usage();
 		}
 	args = arg->argv();
 	if(len args != 1)
@@ -163,6 +166,8 @@ file(f: string, d: Sys->Dir, depth: int)
 		&& !patmatch(d.name, xnames)
 		&& (inames == nil || patmatch(str->tolower(d.name), inames))
 		&& !patmatch(str->tolower(d.name), xinames)
+		&& !patmatch(d.name, xdirs)
+		&& !patmatch(str->tolower(d.name), xidirs)
 		&& (pathres == nil || rematch(p, pathres))
 		&& !rematch(p, xpathres)
 		&& (isdir == ~0 || (isdir && (d.mode & Sys->DMDIR)) || (!isdir && !(d.mode & Sys->DMDIR)))
@@ -176,7 +181,7 @@ file(f: string, d: Sys->Dir, depth: int)
 		else
 			out.puts(sprint("%q\n", p));
 	}
-	if(d.mode & Sys->DMDIR && (depthmax == ~0 || depth < depthmax))
+	if((d.mode & Sys->DMDIR) && (depthmax == ~0 || depth < depthmax) && !patmatch(d.name, xdirs) && !patmatch(str->tolower(d.name), xidirs))
 		walk(p, depth);
 }
 
