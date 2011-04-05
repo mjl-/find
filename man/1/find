@@ -4,7 +4,7 @@ find - recursively filter and list files
 .SH SYNOPSIS
 .B find
 [
-.B -l
+.B -l/
 ] [ 
 .BR -f " | " -F
 ] [
@@ -42,6 +42,11 @@ If option
 .B -l
 was given more information is printed, in a format similar to that of
 .IR ls (1).
+Option
+.B -/
+prints a
+.L /
+after a path if it is a directory.
 The remaining options filter paths to print and traverse.  The next options can only be specified once:
 .TP
 .BI -d " mindepth"

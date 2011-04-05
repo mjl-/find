@@ -26,6 +26,7 @@ Find: module {
 };
 
 lflag: int;
+slash: int;
 users, xusers, groups, xgroups,
 inames, xinames, names, xnames, xdirs, xidirs: list of string;
 pathres, xpathres: list of Regex->Re;
@@ -53,10 +54,11 @@ init(nil: ref Draw->Context, args: list of string)
 	now = dt->now();
 
 	arg->init(args);
-	arg->setusage(arg->progname()+" [-l] [-f | -F] [-d mindepth] [-D maxdepth] [-[uU] user] [-[gG] group] [-[iI] name] [-[nN] name] [-J iname] [-T name] [-[rR] pathregex] [-[pP] perm] [-[mM] mode] path");
+	arg->setusage(arg->progname()+" [-l/] [-f | -F] [-d mindepth] [-D maxdepth] [-[uU] user] [-[gG] group] [-[iI] name] [-[nN] name] [-J iname] [-T name] [-[rR] pathregex] [-[pP] perm] [-[mM] mode] path");
 	while((c := arg->opt()) != 0)
 		case c {
 		'l' =>	lflag++;
+		'/' =>	slash++;
 		'f' =>
 			if(isdir != ~0)
 				arg->usage();
@@ -175,6 +177,8 @@ file(f: string, d: Sys->Dir, depth: int)
 		&& !imatch(d.mode & 8r777, xperms)
 		&& (modes == nil || imatch(d.mode & ~8r777, modes))
 		&& !imatch(d.mode & ~8r777, xmodes);
+	if(slash && d.mode&Sys->DMDIR)
+		p[len p] = '/';
 	if(m) {
 		if(lflag)
 			out.puts(sprint("%s %c %d %q %q %5bd %s %q\n", modestr(d.mode), d.dtype, 0, d.uid, d.gid, d.length, dt->filet(now, d.mtime), p));
